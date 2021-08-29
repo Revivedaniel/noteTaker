@@ -4,7 +4,8 @@ const express = require("express");
 const path = require("path");
 //require db.json
 const db = require("./db/db.json")
-
+//require fs
+const fs = require('fs');
 //define express as app
 let app = express();
 
@@ -35,6 +36,16 @@ app.get("/api/notes", (req, res) => {
     res.json(db)
 })
 //define post for /api/notes
+app.post("/api/notes", (req, res) => {
+    //defining new note
+    const newNote = req.body;
+    dbContent = JSON.parse(fs.readFileSync(path.join(__dirname, "./db/db.json")))
+    console.log(dbContent);
+    dbContent.push(newNote)
+    //Serialize as JSON and Write it to a file
+    fs.writeFileSync(path.join(__dirname, "./db/db.json"), JSON.stringify(dbContent, null, 2));
+    res.json(dbContent)
+})
 //define delete for /api/notes
 
 //define listen
