@@ -41,12 +41,24 @@ app.post("/api/notes", (req, res) => {
     const newNote = req.body;
     //gathering the db data
     dbContent = JSON.parse(fs.readFileSync(path.join(__dirname, "./db/db.json")))
+    newNote.id = Number(dbContent.length) + 1
     //adding new note to dbContent
     dbContent.push(newNote)
     //Serialize dbContent as JSON and Write it to a file
     fs.writeFileSync(path.join(__dirname, "./db/db.json"), JSON.stringify(dbContent, null, 2));
 })
 //define delete for /api/notes
+app.delete('/api/notes/:note', (req, res) => {
+    let dbContent = JSON.parse(fs.readFileSync(path.join(__dirname, "./db/db.json")));
+    const noteToDelete = req.params.note
+    console.log(req.params.note)
+    // for (const key in dbContent) {
+    //     const element = dbContent[key];
+    //     if (element.title == noteToDelete.title) {
+            
+    //     }
+    // }
+})
 
 //define listen
 app.listen(PORT, () => {
