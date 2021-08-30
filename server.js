@@ -41,23 +41,42 @@ app.post("/api/notes", (req, res) => {
     const newNote = req.body;
     //gathering the db data
     dbContent = JSON.parse(fs.readFileSync(path.join(__dirname, "./db/db.json")))
-    newNote.id = Number(dbContent.length) + 1
+    newNote.id = Number(dbContent.length)
     //adding new note to dbContent
     dbContent.push(newNote)
     //Serialize dbContent as JSON and Write it to a file
-    fs.writeFileSync(path.join(__dirname, "./db/db.json"), JSON.stringify(dbContent, null, 2));
+    fs.writeFile(path.join(__dirname, "./db/db.json"), JSON.stringify(dbContent, null, 2), (err) => {
+        if (err) {
+            console.log(err)
+        }
+    });
 })
 //define delete for /api/notes
 app.delete('/api/notes/:note', (req, res) => {
-    let dbContent = JSON.parse(fs.readFileSync(path.join(__dirname, "./db/db.json")));
-    const noteToDelete = req.params.note
-    console.log(req.params.note)
-    // for (const key in dbContent) {
-    //     const element = dbContent[key];
-    //     if (element.title == noteToDelete.title) {
-            
-    //     }
-    // }
+    let dbContent = [];
+    let noteToDelete = req.params.note;
+    fs.readFile(path.join(__dirname, "./db/", "db.json"), (err, data) => {
+        if (err) {
+            console.log(err);
+        }
+        dbContent = JSON.parse(data);
+        for (const key in dbContent) {
+            const element = dbContent[key];
+            if (element.id == noteToDelete) {
+                console.log(dbContent);
+                console.log(noteToDelete);
+                const sameId = (element) => element.id == noteToDelete
+                console.log(dbContent.findIndex(sameId))
+                dbContent.splice(dbContent.findIndex(sameId),1);
+                console.log(dbContent)
+                fs.writeFileSync(path.join(__dirname, "./db/db.json"), JSON.stringify(dbContent, null, 2))
+                break;
+            }
+        }
+    })
+
+    res.send("Deleted")
+    
 })
 
 //define listen
