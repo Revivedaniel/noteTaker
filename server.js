@@ -42,7 +42,11 @@ app.post("/api/notes", (req, res) => {
     const newNote = req.body;
     //gathering the db data
     dbContent = JSON.parse(fs.readFileSync(path.join(__dirname, "./db/db.json")))
-    newNote.id = dbContent[dbContent.length - 1].id + 1
+    if(dbContent.length > 0) {
+        newNote.id = dbContent[dbContent.length -1 ].id + 1;
+    }else {
+        newNote.id = 1
+    };
     console.log(newNote.id)
     //adding new note to dbContent
     dbContent.push(newNote)
