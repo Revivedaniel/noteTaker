@@ -28,6 +28,7 @@ app.get("/notes", (req, res) => {
 
 //define get for /api/notes
 app.get("/api/notes", (req, res) => {
+    db = require(path.join(__dirname, "db", "db.json"));
     res.json(db)
 })
 
