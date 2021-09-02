@@ -56,6 +56,7 @@ app.post("/api/notes", (req, res) => {
         if (err) {
             console.log(err)
         }
+        res.send("Success")
     });
 })
 //define delete for /api/notes
