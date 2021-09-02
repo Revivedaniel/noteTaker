@@ -28,8 +28,8 @@ app.get("/notes", (req, res) => {
 
 //define get for /api/notes
 app.get("/api/notes", (req, res) => {
-    db = require(path.join(__dirname, "db", "db.json"));
-    res.json(db)
+    let dbContent = JSON.parse(fs.readFileSync(path.join(__dirname, "db","db.json")));
+    res.json(dbContent)
 })
 
 //define first get for / to direct to /public/index.html
